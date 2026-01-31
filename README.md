@@ -47,14 +47,14 @@ graph TD
     Oracle --- ClientGroup2[Client Group]:::group
     Oracle --- CameraGroup[Camera Group]:::group
 
-    %% Dispositivos - Client Group (Rama 1 - Infraestructura)
-    subgraph Clients_A [Infraestructura de Red]
-        S1["Network Monitor Server<br/>10.0.0.30"]:::device
-        S2["CasaOS Media Server<br/>10.0.0.100"]:::device
-        S3["Proxmox Server<br/>10.0.0.12"]:::device
-        S4["NVR Server<br/>10.0.0.31"]:::device
-        S5["Personal Laptop<br/>10.0.0.101"]:::device
-        S6["Workstation<br/>10.0.0.102"]:::device
+    %% Dispositivos - Client Group (Rama 1 - Proxmox VE)
+    subgraph Clients_A [Proxmox VE - Ryzen 7 5700G]
+        S1["VM: Network Monitor<br/>10.0.0.30"]:::device
+        S2["VM: CasaOS Media<br/>10.0.0.100"]:::device
+        S3["VM: Development<br/>10.0.0.12"]:::device
+        S4["VM: NVR Server<br/>10.0.0.31"]:::device
+        S5["LXC: Services<br/>10.0.0.101"]:::device
+        S6["LXC: Apps<br/>10.0.0.102"]:::device
     end
     ClientGroup1 --- Clients_A
 
