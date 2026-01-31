@@ -1,0 +1,71 @@
+%% Archivo: diagrams/network-topology.mmd
+%% Descripción: Topología física de red del homelab
+%% Basado en la infraestructura real con The Matrix como router principal
+
+graph TB
+    subgraph Internet["🌍 Internet"]
+        WAN1[("WAN<br/>1000FDX")]
+    end
+    
+    subgraph Core["🔷 Core Network"]
+        Matrix["The Matrix<br/>🖧 Router Principal<br/>10.0.0.1"]
+        Oracle["Oracle Switch<br/>🔌 1000FDX<br/>IF#1"]
+    end
+    
+    subgraph ClientZone["👥 Zona de Clientes"]
+        ClientGroup1["Client Group<br/>💻 Dispositivos Principales<br/>16 dispositivos"]
+        ClientGroup2["Client Group<br/>📱 Dispositivos Secundarios<br/>9 dispositivos"]
+    end
+    
+    subgraph Management["⚙️ Gestión & Control"]
+        OmadaCtrl["Omada Controller<br/>🎛️ Gestión UniFi<br/>1000FDX<br/>IF#3"]
+    end
+    
+    subgraph Surveillance["📹 Sistema de Vigilancia"]
+        CameraGroup["Camera Group<br/>📷 Cámaras IP<br/>3 dispositivos"]
+    end
+    
+    subgraph Servers["🖥️ Servidores & Infraestructura"]
+        NetworkMonitor["Network Monitor Server<br/>📊 1000FDX<br/>IF#3"]
+        CasaOS["CasaOS Media Server<br/>🎬 1000FDX<br/>IF#3"]
+        ProxmoxSrv["Proxmox Server<br/>⚡ Ryzen 7 5700G<br/>1000FDX<br/>IF#3"]
+        NVR["NVR Server<br/>📹 1000FDX<br/>IF#3"]
+    end
+    
+    subgraph Devices["📱 Dispositivos Conectados"]
+        Laptop["Laptop Personal<br/>💻 10FDX"]
+        IoTDevices["Dispositivos IoT<br/>🏠 10FDX"]
+    end
+    
+    %% Conexiones principales
+    WAN1 -->|"Fibra Óptica"| Matrix
+    Matrix -->|"Trunk 1000FDX"| Oracle
+    
+    %% Distribución desde Oracle
+    Oracle -->|"IF#1"| ClientGroup1
+    Oracle -->|"Green Link"| ClientGroup2
+    Oracle -->|"Green Link"| CameraGroup
+    Oracle -->|"IF#3"| OmadaCtrl
+    
+    %% Conexiones de servidores
+    ClientGroup2 -.->|"Uplink"| NetworkMonitor
+    ClientGroup2 -.->|"Uplink"| CasaOS
+    ClientGroup2 -.->|"Uplink"| ProxmoxSrv
+    ClientGroup2 -.->|"Uplink"| NVR
+    ClientGroup2 -.->|"Uplink"| Laptop
+    ClientGroup2 -.->|"Uplink"| IoTDevices
+    
+    %% Estilos
+    classDef internetStyle fill:#e1f5ff,stroke:#01579b,stroke-width:3px,color:#000
+    classDef coreStyle fill:#fff3e0,stroke:#e65100,stroke-width:3px,color:#000
+    classDef clientStyle fill:#f3e5f5,stroke:#4a148c,stroke-width:2px,color:#000
+    classDef serverStyle fill:#e8f5e9,stroke:#1b5e20,stroke-width:2px,color:#000
+    classDef mgmtStyle fill:#fce4ec,stroke:#880e4f,stroke-width:2px,color:#000
+    classDef survStyle fill:#fff9c4,stroke:#f57f17,stroke-width:2px,color:#000
+    
+    class WAN1 internetStyle
+    class Matrix,Oracle coreStyle
+    class ClientGroup1,ClientGroup2 clientStyle
+    class NetworkMonitor,CasaOS,ProxmoxSrv,NVR,Laptop,IoTDevices serverStyle
+    class OmadaCtrl mgmtStyle
+    class CameraGroup survStyle

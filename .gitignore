@@ -1,0 +1,42 @@
+# Archivos de configuración sensibles
+*.env
+*.env.local
+.env
+.env.local
+secrets/
+credentials/
+
+# Configuraciones con datos reales (usar .example en su lugar)
+configs/**/*.conf
+configs/**/*.yml
+configs/**/*.yaml
+!configs/**/*.example.*
+
+# Backups locales
+*.backup
+*.bak
+backups/
+
+# Logs
+*.log
+logs/
+
+# Screenshots con información sensible
+screenshots/*-private.*
+
+# Sistema operativo
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Editores
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Temporal
+tmp/
+temp/
+.cache/
