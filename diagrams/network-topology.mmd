@@ -36,21 +36,21 @@ graph TD
     subgraph Clients_B [Dispositivos de Usuario]
         D1["HUAWEI_MatePad<br/>10.0.0.103"]:::device
         D2["EchoOficina<br/>10.0.0.200"]:::device
-        D3["Mamá Celular<br/>10.0.0.104"]:::device
+        D3["Celular<br/>10.0.0.104"]:::device
         D4["deco-X55<br/>10.0.0.13"]:::device
         D5["Google-Home<br/>10.0.0.201"]:::device
-        D6["Celular Iran<br/>10.0.0.105"]:::device
+        D6["Celular1<br/>10.0.0.105"]:::device
         D7["My HP Laptop<br/>10.0.0.106"]:::device
-        D8["Roger Celular<br/>10.0.0.107"]:::device
+        D8["Celular2<br/>10.0.0.107"]:::device
         D9["Google-Nest-Mini<br/>10.0.0.202"]:::device
     end
     ClientGroup2 --- Clients_B
 
     %% Dispositivos - Camera Group (EZVIZ)
     subgraph Cameras [Cámaras de Seguridad]
-        C1["H6c_BE1997447_EZVIZ<br/>10.0.0.32"]:::device
-        C2["H6c_BF9988917_EZVIZ<br/>10.0.0.33"]:::device
-        C3["H6c_BF9988834_EZVIZ<br/>10.0.0.34"]:::device
-        C4["CS-H6c-R105-1L3WF<br/>10.0.0.35"]:::device
+        C1["Doorbell Camera<br/>10.0.0.32"]:::device
+        C2["backyard Camera<br/>10.0.0.33"]:::device
+        C3["Garage Camera<br/>10.0.0.34"]:::device
+        C4["HomeLab Camera/>10.0.0.35"]:::device
     end
     CameraGroup --- Cameras
