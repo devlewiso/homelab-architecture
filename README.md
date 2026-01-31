@@ -28,64 +28,58 @@
 Infraestructura de red física del homelab con **The Matrix** como router principal y **Oracle** como switch core.
 
 ```mermaid
-graph TB
-    subgraph Internet["🌍 Internet"]
-        WAN1[("WAN<br/>1000FDX")]
+graph TD
+    %% Estilos de hardware Omada
+    classDef router fill:#2c3e50,stroke:#1abc9c,stroke-width:2px,color:#fff
+    classDef switch fill:#34495e,stroke:#3498db,stroke-width:2px,color:#fff
+    classDef device fill:#ecf0f1,stroke:#bdc3c7,color:#2c3e50
+    classDef group fill:#7f8c8d,stroke:#95a5a6,color:#fff
+
+    %% Nivel de Entrada
+    WAN1((Internet)) --- TheMatrix["ER605: The Matrix<br/>10.0.0.1"]:::router
+
+    %% Distribución Core
+    TheMatrix --- Oracle["SG3428: Oracle 🐙<br/>10.0.0.10"]:::switch
+    TheMatrix --- Controller["Omada Controller<br/>10.0.0.11"]:::device
+
+    %% Grupos de Red
+    Oracle --- ClientGroup1[Client Group]:::group
+    Oracle --- ClientGroup2[Client Group]:::group
+    Oracle --- CameraGroup[Camera Group]:::group
+
+    %% Dispositivos - Client Group (Rama 1 - Infraestructura)
+    subgraph Clients_A [Infraestructura de Red]
+        S1["Network Monitor Server<br/>10.0.0.30"]:::device
+        S2["CasaOS Media Server<br/>10.0.0.100"]:::device
+        S3["Proxmox Server<br/>10.0.0.12"]:::device
+        S4["NVR Server<br/>10.0.0.31"]:::device
+        S5["Personal Laptop<br/>10.0.0.101"]:::device
+        S6["Workstation<br/>10.0.0.102"]:::device
     end
-    
-    subgraph Core["🔷 Core Network"]
-        Matrix["The Matrix<br/>Router Principal"]
-        Oracle["Oracle Switch<br/>1000FDX"]
+    ClientGroup1 --- Clients_A
+
+    %% Dispositivos - Client Group (Rama WiFi/Personal)
+    subgraph Clients_B [Dispositivos de Usuario]
+        D1["HUAWEI_MatePad<br/>10.0.0.103"]:::device
+        D2["EchoOficina<br/>10.0.0.200"]:::device
+        D3["Celular<br/>10.0.0.104"]:::device
+        D4["deco-X55<br/>10.0.0.13"]:::device
+        D5["Google-Home<br/>10.0.0.201"]:::device
+        D6["Celular1<br/>10.0.0.105"]:::device
+        D7["My HP Laptop<br/>10.0.0.106"]:::device
+        D8["Celular2<br/>10.0.0.107"]:::device
+        D9["Google-Nest-Mini<br/>10.0.0.202"]:::device
     end
-    
-    subgraph ClientZone["👥 Zona de Clientes"]
-        ClientGroup1["Client Group<br/>16 dispositivos"]
-        ClientGroup2["Client Group<br/>9 dispositivos"]
+    ClientGroup2 --- Clients_B
+
+    %% Dispositivos - Camera Group (EZVIZ)
+    subgraph Cameras [Cámaras de Seguridad]
+        C1["Doorbell Camera<br/>10.0.0.32"]:::device
+        C2["backyard Camera<br/>10.0.0.33"]:::device
+        C3["Garage Camera<br/>10.0.0.34"]:::device
+        C4["HomeLab Camera<br/>10.0.0.35"]:::device
     end
-    
-    subgraph Management["⚙️ Gestión"]
-        OmadaCtrl["Omada Controller"]
-    end
-    
-    subgraph Surveillance["📹 Vigilancia"]
-        CameraGroup["Cámaras IP<br/>3 dispositivos"]
-    end
-    
-    subgraph Servers["🖥️ Servidores"]
-        NetworkMonitor["Network Monitor"]
-        CasaOS["CasaOS Media Server"]
-        ProxmoxSrv["Proxmox Server<br/>Ryzen 7 5700G"]
-        NVR["NVR Server"]
-    end
-    
-    %% Conexiones principales
-    WAN1 -->|"Fibra"| Matrix
-    Matrix -->|"Trunk"| Oracle
-    
-    %% Distribución
-    Oracle --> ClientGroup1
-    Oracle --> ClientGroup2
-    Oracle --> CameraGroup
-    Oracle --> OmadaCtrl
-    
-    %% Servidores
-    ClientGroup2 -.-> NetworkMonitor
-    ClientGroup2 -.-> CasaOS
-    ClientGroup2 -.-> ProxmoxSrv
-    ClientGroup2 -.-> NVR
-    
-    %% Estilos
-    classDef internetStyle fill:#e1f5ff,stroke:#01579b,stroke-width:3px
-    classDef coreStyle fill:#fff3e0,stroke:#e65100,stroke-width:3px
-    classDef clientStyle fill:#f3e5f5,stroke:#4a148c,stroke-width:2px
-    classDef serverStyle fill:#e8f5e9,stroke:#1b5e20,stroke-width:2px
-    classDef mgmtStyle fill:#fce4ec,stroke:#880e4f,stroke-width:2px
-    
-    class WAN1 internetStyle
-    class Matrix,Oracle coreStyle
-    class ClientGroup1,ClientGroup2 clientStyle
-    class NetworkMonitor,CasaOS,ProxmoxSrv,NVR serverStyle
-    class OmadaCtrl,CameraGroup mgmtStyle
+    CameraGroup --- Cameras
 ```
 
 ---
